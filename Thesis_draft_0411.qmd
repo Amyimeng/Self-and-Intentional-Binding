@@ -1,0 +1,783 @@
+---
+title: "Unmasking the Self: Testing the Role of Conscious Awareness in Intentional Binding and Interpretive Structures"
+shorttitle: "Self and Intentional Binding"
+author:
+  - name: Yimeng (Amy) CHENG
+    corresponding: true
+    orcid: 0009-0007-1238-3749
+    email: yimengcheng@uchicago.edu
+    affiliations:
+      - name: University of Chicago
+        department: Department of Psychology
+        address: 5801 S Ellis Ave
+        city: Chicago
+        region: IL
+        country: USA
+        postal-code: 60615
+author-note:
+  status-changes: 
+    affiliation-change: null
+    deceased: null
+  disclosures:
+    study-registration: null
+    data-sharing: null
+    related-report: null
+    financial-support: null
+    gratitude: null
+    authorship-agreements: null
+abstract: "Intentional binding (IB)—the perceived temporal compression between a voluntary action and its consequence—has long been interpreted as a behavioral marker of agency and minimal selfhood. Yet its theoretical foundations remain contested: is IB merely a perceptual artifact, or does it signal the activation of a deeper interpretive structure underlying agency and self-consciousness? To address this question, we conducted a preregistered experiment employing a sensory masking paradigm to compare IB effects under conscious and subconscious awareness conditions. A total of 92 participants completed four experimental blocks manipulating action-consequence contingency and stimulus visibility (masked vs. unmasked). Results from 74 participants (after screening) revealed three key findings: (1) contrary to expectations, no significant IB effect was observed in the unmasked condition; (2) in the masked condition, a significant negative binding effect emerged—participants perceived the consequence as occurring later than the action; and (3) binding in the masked condition was significantly weaker than in the unmasked condition.
+
+These findings challenge the prevailing assumption that IB is a stable, intrinsic feature of agency. Instead, they suggest that conscious awareness plays a critical role in enabling the interpretive processes that underlie binding. The reversed IB under masked conditions further supports recent proposals that binding may reflect the brain’s attempt to construct a coherent causal model, and that when this coherence fails, the brain actively distances action and effect in time. By distinguishing between binding as perceptual integration versus interpretive coherence, this study contributes to a deeper understanding of the cognitive architecture of agency and raises important questions about whether such architectures can be instantiated in artificial systems. We discuss the implications of our findings in relation to emergentist theories of selfhood, particularly Deacon’s teleodynamic model, and argue that IB may serve as a fragile but meaningful behavioral window into the presence or absence of self-like interpretive structures."
+keywords: ["Consciousness", "Sense of Agency", "Awareness", "Cognition", "CFS","Intentional Binding"]
+bibliography: [bibliography.bib, thesis-v2.bib]
+
+format:
+  apaquarto-docx:
+    toc: true
+    reference-location: section
+    fig-cap-location: top
+    citation-style: apa
+
+execute:
+  fig-format: png
+
+editor:
+  markdown:
+    wrap: sentence
+---
+
+```{r}
+#| label: set up
+#| include: FALSE
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r}
+#| label: load r library
+library(dplyr)
+library(tidyverse)
+library(readr)
+library(knitr)
+library(kableExtra)
+library(MASS)
+library(ggplot2)
+
+```
+
+```{python}
+#| label: load python library
+import os
+import glob
+import pandas as pd
+import numpy as np
+import matplotlib
+matplotlib.use('Agg') 
+import matplotlib.pyplot as plt
+from scipy.stats import fisher_exact
+from scipy.stats import ttest_1samp
+```
+
+## I. The Multiple Meanings of "Self" and the Challenges of Research 
+
+The concept of the "self" has long been discussed in cognitive science, psychology, neuroscience, and philosophy, yet it still lacks a unified definition.
+
+In interdisciplinary discourse, the term is frequently attributed with multiple, often conflicting meanings, leading to theoretical confusion and methodological inconsistency  [@gallagherPhilosophicalConceptionsSelf2000b; @strawsonSelvesEssayRevisionary2009; @strawsonSelfawarenessAcquaintanceIntentionality2022].
+
+In his bio-philosophical work *Incomplete Nature*, @deaconIncompleteNatureHow2011 points out that the term "self" encompasses at least three distinct but commonly conflated definitions:
+
+**Self-starting,** referring to a system's capacity to initiate change or behavior through internal mechanisms without external input. This usage is particularly common in theories of automata and complex systems;
+
+**Self-motivated,** which emphasizes an internal subjective drive or intentionality, implicitly involving a psychological structure akin to "I want...";
+
+**Self-contained,** denoting a system whose components form a closed, interdependent coupling mechanism that functions without the need for direct external regulation.
+
+Each of these definitions has theoretical legitimacy within its own disciplinary context.
+
+However, when these meanings are used interchangeably, especially in terms like “self-organizing systems” or “selfhood”, they often blur theoretical boundaries and disrupt coherent chains of reasoning [@shermanNeitherGhostMachine2017].
+
+For instance, in neuroscience, "self" is frequently equated with activation patterns in specific brain regions; in social psychology, it may be operationalized as motivation, value orientation, or self-efficacy; in philosophy, it often refers to a center of subjectivity or the locus of experience.
+This kind of conceptual drift hinders theoretical integration across disciplines and impedes the scientific endeavor to explain or predict the phenomenon of selfhood in a coherent and testable way.
+
+At a deeper level, this semantic inconsistency reflects a fundamental ontological tension between reductionist and non-reductionist (or emergentist) positions [@shermanNeitherGhostMachine2017]. The former holds that all phenomena related to the self will ultimately be reduced to physical mechanisms or neural processes. In contrast, non-reductionist theories argue that the self—though not necessarily a tangible entity—possesses irreducible systemic functions that emerge only at higher levels of organizational complexity.
+
+## II. The Reductionist View
+
+### 2.1 The Self as a Misuse of Language
+
+From a strong reductionist perspective, all psychological and social phenomena can ultimately be explained in terms of physical, causal interactions between material systems. As @crickAstonishingHypothesisScientific1996 claimed, the subjective experiences we associate with selfhood, such as emotions, memories, and agency, can be fully accounted for by the underlying neural activity and molecular processes of the brain, without requiring any reference to a non-material self. Moreover, @churchlandNeurophilosophyUnifiedScience1989 argued that concepts such as motivation, belief, and will are merely pre-scientific terms: they are part of an outdated explanatory framework that will eventually be replaced by more accurate neuroscientific vocabulary as our understanding of the brain advances.
+
+According to this position, the self is not a real ontological entity but merely a convenient illusion arising as a byproduct of complex neural processes. Along a similar line, @dennettIntentionalStance1989 argued that intentionality itself is a cognitive mistake: any theory that employs phrases like “someone wants…” or “a system is trying to…” inadvertently introduces what he called a “homunculus”, a fictitious internal agent which reintroduces precisely the kind of mentalistic explanation that a scientific theory is meant to eliminate.
+
+### 2.2 Dawkins’ Theory: Anti-Teleology and Yet Teleological Language
+
+Within the reductionist framework, *The Selfish Gene* by @dawkinsSelfishGene1976  remains one of the most influential and widely cited texts. He famously proposed that organisms are essentially “survival machines” for their genes, and that the ultimate function of all behavior is to enhance the replication efficiency of genetic material. From this view, natural selection does not involve any kind of purpose or intentionality; instead, the complexity of life can be fully explained by blind inheritance mechanisms and adaptive feedback loops.
+
+Paradoxically, however, @dawkinsSelfishGene1976’s own descriptions sometimes use teleological language. He sometimes wrote that “The antelope genes want the meat as working muscle..." (p. 89), and that they are “trying to get more numerous in the gene pool” (p.95). While he explicitly denies the validity of teleology in evolutionary theory, the rhetorical structure of his arguments consistently slips toward purpose-like formulations, as though genes possess intentions or goals. This contradiction has been sharply criticized by theorists such as Terrence Deacon and Daniel Dennett, who argue that such expressions reveal a semantic fault line within reductionist discourse: if a system is truly without intention or purpose, then its behavior should not be described as if it were trying to achieve something [@deaconIncompleteNatureHow2011; @dennettIntentionalStance1989].
+
+This is not merely a matter of stylistic inconsistency. Instead, it constitutes a deeper philosophical ambiguity. As @deaconIncompleteNatureHow2011 notes, Dawkins fails to clearly differentiate between teleology, which implies genuine goal-directedness, and teleonomy, which refers to behaviors that merely appear purposeful but are in fact driven by mechanistic processes. When we say “genes want to survive,” we implicitly elevate teleonomy into teleology, thereby undermining the reductionist stance that seeks to avoid ascribing any agency to biological systems.
+
+### 2.3 Why Does the Self Care About Its Own Existence?
+
+A fundamental paradox faced by reductionist thinkers like Dawkins is the apparent contradiction between the proposed randomness of the self and its observable structural persistence. If the self is merely a byproduct of evolutionary and physical processes, why does it display long-term stability, anti-entropic behavior, and internal coherence?
+
+Within the framework of physicalism, the second law of thermodynamics predicts that isolated systems should tend toward maximal entropy—that is, increasing disorder and disintegration [@shermanNeitherGhostMachine2017]. Yet, biological systems seem to resist this universal trend, maintaining high levels of organization, dynamic stability, and even self-repair over time [@shermanNeitherGhostMachine2017].
+
+As a response, @deaconIncompleteNatureHow2011 introduced a critical challenge to strict reductionist logic. While non-living physical systems, such as whirlpools, may exhibit temporary order through spontaneous pattern formation, they do not possess any intrinsic tendency to preserve that regularity. By contrast, living systems actively counteract disintegration, exhibiting structural mechanisms aimed at maintaining their own organization. This effort to persist is not driven by conscious awareness, but rather by a system-level coordination among interdependent sub-processes that sustain the system against degradation. According to Deacon, this kind of behavior should not be viewed as deterministic causation but as an emergent form of constraint, which is what he termed interpretive constraints.
+
+Deacon claimed that what distinguishes living systems is their ability to form feedback architectures that anticipate and attempt to prevent system failure. This attempt is not motivated in the psychological sense, but reflects a physical structure organized around the possibility of failure. In other words, biological systems are not simply ordered, but they are ordered with conditions, with internal subsystems regulating each other in a way that collectively resists entropy. Deacon emphasizes that it is this vulnerability to collapse, coupled with the capacity to resist it, that gives rise to the kind of self-like systems we recognize in life.
+
+Further, he suggested that such systems engage in selective responsiveness to external inputs, ongoing modulation of internal states, and even retain structural memory of past adaptations. From this perspective, what constitutes selfhood is not the presence of awareness per se, but rather a system’s capacity to organize its components around avoiding dissolution. These systems essentially make bets on their own survival—not through volitional intent, but through a structure that embeds interpretation, regulation, and anticipation. As Deacon articulates, the essence of an interpretive system lies not in stating facts, but in making predictions that could fail, and that failure would matter to the system’s continued existence.
+
+In this view, trying marks the origin of teleological behavior in nature. It is not imposed from above or added post hoc, but emerges whenever a system forms internal dynamics that respond to what helps it continue being. This constitutes the physical basis of meaning: events acquire meaning to a system because they influence its survival. Thus, the emergence of value and significance is grounded in the physical necessity to endure, rather than in subjective experience alone.
+
+## III. Emergentist Response: The Irreducibility of Interpretive Structures
+
+In contrast to reductionism, which seeks to explain higher-order phenomena such as consciousness, selfhood, and motivation purely in terms of neural firing patterns or genetic algorithms, emergentism argues that although mental phenomena arise from physical processes, they become functionally irreducible once they attain a certain level of structural organization [@nagelMindCosmosWhy2012; @shermanNeitherGhostMachine2017]. That is, when a system crosses a threshold of complexity, it does not simply accumulate more physical interactions, but rather gives rise to a new causal level, at which behavior is no longer determined by linear physical causation alone but instead emerges from cross-level coordination and the construction of meaning.
+
+One of the leading philosophical voices in this domain, @nagelMindCosmosWhy2012, has argued that consciousness, selfhood, and values may not be mere evolutionary accidents, but instead reflect an intrinsic teleological propensity of nature. He challenges the view that subjective experience can be reduced to a function mapping sensory input to behavioral output. Instead, he proposes that intention and consciousness represent non-physical yet natural dimensions within the fabric of reality—dimensions with their own evolutionary trajectories and explanatory frameworks, which cannot be fully captured by reductionist language.
+
+In parallel, @hofstadterAmStrangeLoop2007 offered a more computational and cognitive account through his theory of “strange loops”. He suggests that the self emerges from recursive structures in which a system is not merely reacting to external inputs but is also capable of interpreting itself. When a system can refer to itself from a higher level—for instance, when a person thinks, “I am thinking about myself thinking”, it forms a multi-level self-referential loop. Such recursion is not an empty linguistic regress but the foundation of the experience of “I”, providing a stable internal model of identity and agency.
+
+The key structural feature of this model is that the explainer is also the explained [@hofstadterAmStrangeLoop2007]. Unlike classical causal chains, which are unidirectional, Hofstadter’s model of the self is cyclical and integrative, allowing the system to monitor, evaluate, and adjust its own behavior. This leads to the emergence of what we might call interpretive integration: a capacity that goes beyond stimulus-response mechanics and involves integrating external events, internal states, historical memory, and future projections into a unified, adaptive framework.
+
+Thus, emergentism does not deny the physical basis of behavior but asserts that once a system achieves interpretive closure, its dynamics are regulated not merely by lower-level physical inputs, but by a new organizational tier with its own explanatory logic. This provides a naturalistic yet non-reductionist account of phenomena such as self, consciousness, and agency—not through appeals to metaphysical soul concepts, nor through illusions of neural overinterpretation, but through structurally grounded mechanisms of recursive interpretation and regulation.
+
+Within this framework, the self is not a hidden metaphysical entity or a discrete activation pattern in the brain; it is the structural state of a system that can refer to itself, interpret its conditions, and organize its behavior in terms of internal coherence and external adaptability.
+
+## IV. The Autogen Model
+
+A recurring theme in theories of life and selfhood is whether complexity and replication are sufficient to account for the emergence of purposive behavior. In traditional reductionist views, as represented by @dawkinsSelfishGene1976, life is essentially about genetic replication. More recently, proponents of the RNA world hypothesis [@bernhardtTransitionNoncodedCoded2010; @bernhardtPrimordialSoupVinaigrette2012; @kuaPrimordialOceanChemistry2011] have reinforced this position by arguing that the essence of life lies in the emergence of coded protein synthesis from self-replicating RNA structures. In this view, selfhood is not a prerequisite but a derivative phenomenon—a functional byproduct of increasingly sophisticated information copying.
+
+A related but more physically grounded view comes from the Maximum Entropy Production Principle [@swensonAutocatakineticsEvolutionLaw1997; @swensonEmergentAttractorsLaw1989; @swensonThermodynamicReasonsPerceptionaction1991]. This principle suggests that ordered structures such as vortices, organisms, or cognitive systems persist not because they aim to survive, but because they maximize entropy production more efficiently than disordered states. From this perspective, the universe "selects" self-like systems because they accelerate energy dissipation—vortices spin faster, photosynthesis releases heat, and minds transform information into action. This logic has extended into contemporary debates on artificial intelligence: can artificial systems, such as large language models, ever develop a genuine self? These views often reflect a thresholdist stance—that a system, once sufficiently complex, might cross an invisible line into self-awareness [@bishopAnyoneHomeWay2018; @obergSoulsSelvesQuerying2023; @srinivasaAISenseSelf2022].
+
+Both gene-centric and entropy-centric views interpret selfhood as an efficient outcome, a side-effect of replication or energy dissipation, rather than a purposeful system. Yet as biochemist Jacques @monodChanceNecessity1974 argued, the real puzzle for biology lies not in explaining how complexity or replication arise, but in accounting for how systems exhibiting goal-directed behavior could emerge in a universe that, by all appearances, lacks intrinsic purpose.
+
+In contrast, Deacon proposes the autogen model [@deaconHowMoleculesBecame2021; @deaconOriginsBiologicalTeleology2024; @garcia-valdecasasOriginsBiologicalTeleology2024] , a minimal prototype of life and selfhood. An autogen comprises a self-maintaining structure formed by the coupling of:
+
+A self-reinforcing chemical reaction network (autocatalysis);
+
+A self-enclosing boundary system (like a vesicle or membrane).
+
+Crucially, neither subsystem can persist alone—they are interdependent, dynamically compensating for each other’s tendency toward entropy. This anti-entropic coupling forms a feedback loop that enables structural recovery when disruption occurs. The system “tries” to maintain itself—not via intention, but through emergent interpretive logic. It selectively responds to disturbances, judges what matters to its own viability, and organizes around that criterion.
+
+This structural coherence-through-feedback, not mere code replication, is what Deacon sees as the origin of teleology and selfhood. Autogens exhibit meaning in a primitive form: they don’t just exist; they behave as if existence matters. And this is precisely what current AI systems lack. Though they simulate reasoning and generate complex outputs, they are not organized around their own continuity. Their adjustments are governed externally—by training objectives and loss functions—not internally by structural necessity.
+
+Deacon’s insight is not to dismiss replication, but to embed it within a larger explanatory structure. Genes are important, but they function within systems that interpret, repair, and sustain themselves. Therefore, self precedes code; maintenance precedes replication; interpretation precedes information [@deaconHowMoleculesBecame2021; @deaconOriginsBiologicalTeleology2024; @garcia-valdecasasOriginsBiologicalTeleology2024].
+
+Understanding this distinction is crucial—not only for defining life, but for assessing whether any artificial system could ever possess selfhood. It also reframes experimental questions: how can we empirically determine whether a system engages in structural interpretive maintenance, rather than merely behaving as if it does?
+
+This is where the phenomenon of **intentional binding** gains new relevance. It offers a behavioral window into whether a system (biological or artificial) integrates action and consequence in a way that suggests internal, meaning-driven coordination. As such, it may serve as a testbed for differentiating emergent selves from reactive algorithms, and for advancing the broader debate between reductionism and emergentism.
+
+## V. Intentional Binding as an Empirical Window 
+
+Intentional Binding [IB; @haggardVoluntaryActionConscious2002b; @mooreIntentionalBindingSense2012] is a phenomenon originally observed in cognitive neuroscience in relation to the sense of agency, the subjective experience of initiating and controlling one’s actions [@haggardSenseAgency2012]. It refers to the perceived temporal compression between a voluntary action and its sensory consequence: when individuals intentionally perform an action that leads to an outcome, they tend to perceive the action and its effect as temporally closer than they actually are. Traditionally, intentional binding has been understood as a perceptual bias arising from the brain’s effort to temporally align internally generated motor predictions with externally perceived outcomes [@haggardVoluntaryActionConscious2002b]. This alignment is often attributed to forward models in sensorimotor control, whereby the system anticipates the sensory consequences of voluntary actions and adjusts temporal perception accordingly [@haggardVoluntaryActionConscious2002b; @finkNeuralConsequencesConflict1999; @dapratiLookingAgentInvestigation1997; @wolpertComputationalPrinciplesMovement2000]. While @haggardVoluntaryActionConscious2002b rely on neurophysiological evidence, their framework does not reduce the phenomenon of self-agency to neural firing patterns alone. Rather, their approach reflects a functional realist position, wherein agency is treated as a meaningful and coherent experiential construct—one that is instantiated through specific cognitive mechanisms, but not reducible to them. Their core finding—that intentional binding occurs only when actions are volitional and operant, and not when they are passively induced (e.g., via TMS)—demonstrates that subjective intention is a necessary condition for the perceptual compression between action and consequence to emerge. In other words, the brain appears to apply a specific, selective mechanism for linking temporally separated events only when those events are interpreted as arising from the individual’s own agency. 
+
+Furthermore, @haggardVoluntaryActionConscious2002b propose that this binding process reflects a distinct cognitive function of the central nervous system, modulated by temporal contiguity and predictability. This proposal moves beyond simple perceptual biases or bottom-up neural computation models. It suggests that the CNS engages in higher-order integrative processing, uniting motor intentions with their sensory consequences in a temporally coherent framework. This is particularly significant because the study rules out alternative explanations, such as attentional bias [e.g., prior entry; @kornblumAttentionPerformanceIV1973], as sources of the binding effect. Instead, the results are interpreted as evidence of a dedicated, top-down mechanism that orchestrates the alignment of action and effect in conscious experience.
+
+While @haggardVoluntaryActionConscious2002b findings point to a higher-order integrative mechanism underlying intentional binding, their empirical focus [as well as that of subsequent research, including @ebertTimeWarpAuthorship2010; @ruessIntentionalBindingVisual2018a; @imaizumiIntentionalBindingCoincides2019] has been largely restricted to conditions of conscious awareness. In these paradigms, participants are explicitly aware of both the actions they initiate and the outcomes that follow, allowing researchers to examine how volitional control shapes the temporal binding of cause and effect. This body of work has been instrumental in linking the binding effect to subjective experiences of agency and has framed intentional binding as a perceptual signature of self-generated action.
+
+However, this exclusive emphasis on conscious contexts raises an important theoretical limitation. If all current evidence of IB is derived from situations where participants are aware of both action and outcome, it becomes impossible to disentangle whether the binding effect is a result of conscious intention per se—or of deeper, structurally embedded mechanisms of self-regulation. In other words, as long as studies remain confined to conscious awareness, they cannot adjudicate between models that treat self-agency as a phenomenological construct (i.e., one that depends on introspective access) and those that frame it as an emergent organizational property of systems that “try” to maintain structural coherence.
+
+To resolve the theoretical ambiguity surrounding the cognitive mechanisms of intentional binding (IB), it becomes necessary to probe whether IB can still occur in the absence of conscious awareness of action consequences. Specifically, whether a system can exhibit temporal compression between an action and its masked (hence without conscious awareness) outcome. 
+
+If experimental evidence shows that IB occurs only when participants consciously perceive both the action and its outcome, this finding would align most strongly with functionalist or moderate realist perspectives [e.g., @mooreIntentionalBindingSense2012; @haggardVoluntaryActionConscious2002b]. These views posit that agency arises when a system can access and align internal intentions with external outcomes, via predictive and integrative neural mechanisms. While they do not necessarily deny the existence of a self, they constrain the experience and effect of self-agency to conscious awareness. The implication is clear: without awareness, there is no agency—and therefore no binding.
+
+In contrast, if IB is observed even under conditions of subconscious perception—for instance, when the outcome of an action is masked from awareness using a technique like continuous flash suppression (CFS)—this would provide strong empirical support for emergentist theories, particularly those proposed by @deaconHowMoleculesBecame2021. In Deacon's framework, the self precedes consciousness; it emerges at the point when a system begins to coordinate internal components to resist entropy and maintain structural integrity. Importantly, this form of “trying”—a structurally embedded, recursive effort to survive—does not require reflective awareness. In this view, IB is not the byproduct of consciousness, but rather a signal of the system’s engagement in self-sustaining explanatory behavior. The presence of IB under unconscious conditions would indicate that the system has already incorporated the consequence into its regulatory structure, even if this has not risen to the level of conscious awareness.
+
+Lastly, if intentional binding is found to be minimal or unstable across both conscious and subconscious conditions, this outcome would lend support to a mechanistic model of agency. Rather than indicating the presence of an emergent self, the IB effect would then be interpreted as a statistical artifact of low-level sensory prediction and integration.
+
+Several empirical findings point in this direction. For instance, @suzukiIntentionalBindingIntentional2019 demonstrated that IB-like effects can occur even in the absence of volitional action. Using virtual hand manipulations, they found that participants perceived temporal compression between actions and outcomes even when those actions were not generated intentionally. This suggests that temporal binding may arise simply from spatial and temporal congruency across modalities, rather than from agency itself.
+
+Moreover, @gutzeitIntentionalBindingMerely2023 challenged the validity of IB as a marker of self-agency, claiming that it may be based on procedural confounds. In their experiments, participants explicitly reported a strong sense of agency, yet IB effects did not consistently follow. This dissociation indicates that subjective agency and IB are not necessarily aligned, and that IB may be more sensitive to contextual perceptual features than to genuine interpretive processes.
+
+
+Further, @buehnerUnderstandingPredictingFuture2012 argues that what truly underlies binding is not the presence of an internal "self" or subjective agency, but causal inference. Drawing on Bayesian principles, Buehner suggests that the brain seeks to reduce perceptual ambiguity by temporally associating cause and effect—regardless of whether the cause is an intentional act or a mechanical trigger. This leads to a reframing of IB as “causal binding” rather than a purely intentional phenomenon. In his experiments, both machine-generated and self-generated causes led to perceptual attraction effects between actions and outcomes, whereas non-causal (i.e., merely correlative) sequences did not. This challenges theories that interpret IB as a marker of agency or self-awareness, proposing instead that it reflects the brain's general mechanism for linking temporally contiguous events that share a causal structure.
+
+In this light, a failure to observe IB under either conscious or unconscious conditions could be interpreted not as evidence against the existence of self or agency, but rather as a signal that the causal link between action and effect was not salient enough to engage the binding mechanism. This aligns with findings by Suzuki et al. (2019), who observed IB in the absence of explicit action control, and Siebertz & Jansen (2022), who found IB to be unstable and highly variable, suggesting it may not reliably track subjective agency.
+
+The present study takes this debate further by testing whether IB occurs even when the outcome of an action is unconscious.  Our study implements a novel design that combines the classic IB paradigm with Continuous Flash Suppression [CFS; @haggardVoluntaryActionConscious2002b; @Pournaghdali2020; @Tsuchiya2005], a powerful interocular masking technique that suppresses visual stimuli from awareness by presenting dynamic noise patterns to the dominant eye. By using CFS to selectively suppress awareness of the sensory consequence (e.g., a visual flash) while keeping the motor action consciously initiated, we are able to experimentally dissociate subjective awareness from the cognitive mechanisms potentially responsible for IB. This allows us to test whether the brain continues to exhibit binding effects even when the outcome is not consciously perceived.
+
+By manipulating conscious accessibility using CFS and measuring IB across masked and unmasked conditions, our experiment provides a critical test of whether intentional binding genuinely reflects interpretive, self-regulating structures, or whether it can be fully explained within non-teleological, mechanistic frameworks. This experimental design, detailed in the following Methods section, therefore contributes not only to the empirical literature on agency and timing, but also to deeper philosophical questions about the nature and origin of the self.
+
+# Hypotheses
+
+## Hypothesis 1: Positive Control
+
+Hypothesis 1 serves as the foundational hypothesis, verifying that intentional binding can reliably occur under conscious conditions:
+
+If, in the unmasked operant condition (where participants can consciously see the target stimulus), participants perceive their button press time as closer to the outcome time compared to the unmasked baseline condition (where no target stimulus appears), this would confirm that the experimental design successfully elicits the intentional binding effect, indicating a sense of agency when the outcome is consciously perceived [^1].
+
+[^1]: If Hypothesis 1 is not supported, the results from Hypothesis 2 would be inconclusive, as we would lack evidence in the design’s ability to measure SoA.
+
+## Hypothesis 2: Unconscious Conditions
+
+If in the masked operant condition (where the target is suppressed from awareness), participants still perceive a time shortening, then this indicates that SoA occurs even without conscious perception.
+
+## Hypothesis 3: Consciousness Enhances Binding
+
+This hypothesis aims to test whether consciousness enhances SoA.
+If participants’ perceived time shift in the unmasked operant condition is greater than in the masked operant condition, then this suggests that conscious awareness strengthens SoA.
+
+# Method
+
+## Ethical Approval
+
+The Social and Behavioral Sciences Institutional Review Board at the University of Chicago has approved this study (IRB23-1353).
+Informed consent will be obtained from all participants before the experiment, and they will be informed of their right to withdraw at any time.
+Participants will receive 1.5 course credits for participation.
+
+## Participants
+
+Eighty undergraduate University of Chicago students with normal color vision will be recruited to allow detection of medium effect sizes with a power of 0.80 assuming an effect size of $d$ = 0.5 and a significance level of 0.01.
+Participants will be asked about their age, biological sex and handedness.
+
+## Procedure
+
+The experiment comprises five within-subject blocks, as follows:
+
+**1. Calibration Block:** The purpose of this block is to determine the visual contrast threshold for each participant to ensure the target stimulus is effectively suppressed from conscious awareness.
+Participants will be required to wear red-blue anaglyph glasses.
+The left eye sees rapidly changing red-colored masks (10 Hz), and the right eye sees a low-contrast blue circle.
+In 100 trials, a blue circle appears in a random corner of the masked area between 0.25 and 1.75 seconds after the mask onset.
+Participants indicate which side of the screen they think the blue circle appeared on.
+
+**2. Baseline-Masked Block:** The CFS masks are presented in the middle of a rotating on-screen clock, with participants still wearing red-blue glasses.
+Participants will be required to press the space bar at a moment of their choosing, stopping the CFS mask 1-2 seconds later.
+The clock stops, and after a delay, the clock hand reappears at a random position.
+Participants then adjust the clock hand to where they believe it was at the time of their button press.
+For additional check, participants will be asked after each trial if they saw a blue circle; this serves to confirm the effectiveness of the CFS mask in suppressing conscious perception of the target stimulus.
+
+**3. Operant-Masked Block:** The set up is similar to the baseline-masked block, but with an added target stimulus.
+After participants press the space bar, a blue circle (target stimulus) appears in a predetermined corner of the masked area 150 ms after the press, remaining on-screen for 200 ms. Participants then complete the same clock-adjustment task to report their perceived time of the button press.
+As with the baseline-masked block, participants report after each trial whether they saw a blue circle.
+A few “decoy” trials with a full-contrast circle are randomly added to monitor participants' awareness levels.
+
+**4. Baseline-Unmasked Block:** This condition is identical to the baseline-masked block, except no CFS masking is used.
+Participants are not expected to see any target stimulus.
+Participants will be required to press the button at a self-chosen time, the clock stops, and they adjust the clock hand to the perceived time of their button press, as in previous blocks.
+
+**5. Operant-Unmasked Block:** This condition mirrors the operant-masked block but without CFS masking, there fore the blue circle (target stimulus) is clearly visible to participants.
+
+## 2x2 Design Table
+
+```{r}
+#| label: tbl-experimental-design
+#| tbl-cap: "Experimental Design: 2 x 2"
+#| echo: FALSE
+
+table_data <- data.frame(
+  Condition = c("2. Baseline-Masked", "3. Operant-Masked", 
+                "4. Baseline-Unmasked", "5. Operant-Unmasked"),
+  `Blue Circle Appear` = c("No", "Yes", "No", "Yes"),
+  `CFS Masking` = c("Yes", "Yes", "No", "No")
+)
+
+kable(table_data, format = "latex",
+      booktabs = TRUE, align = "c") %>%
+  kable_styling(latex_options = c("striped", "scale_down"), position = "float_left") %>%
+  row_spec(0, bold = TRUE, color = "black") %>%
+  column_spec(1, bold = TRUE)
+
+```
+
+@tbl-experimental-design shows the 2x2 experimental design.
+
+## Experimental Design and Corresponding Hypotheses
+
+```{r}
+#| label: tbl-testing-hypotheses
+#| tbl-cap: "Testing Hypotheses"
+#| echo: FALSE
+
+table_data <- data.frame(
+  Hypotheses = c("H1: Positive Control", "H2: Unconscious SoA"),
+  `Conditions Compared` = c("4 vs. 5", "2 vs. 3"),
+  Question = c("Does binding occur when the outcome is visible?",
+               "Can binding occur without conscious awareness?")
+)
+
+kable(table_data, format = "latex",
+      booktabs = TRUE, align = "c") %>%
+  kable_styling(latex_options = c("striped", "scale_down"), position = "float_left") %>%
+  row_spec(0, bold = TRUE) %>%
+  column_spec(1, bold = TRUE)
+
+```
+
+@tbl-testing-hypotheses exibits the hypotheses and its corresponding comparasion conditions.
+
+# Data Analysis
+
+Data analysis was conducted using Python 3.10 with the following packages: NumPy [@harris2020array], Pandas [@mckinney2010data], SciPy [@virtanen2020scipy], Statsmodels [@seabold2010statsmodels], and Matplotlib [@hunter2007matplotlib].
+
+```{python}
+#| label: dataload glpb
+#| echo: FALSE
+
+def safe_glob(pattern):
+    matches = glob.glob(pattern)
+    if not matches:
+        raise FileNotFoundError(f"No match for pattern: {pattern}")
+    return matches[0]
+
+
+```
+
+```{python}
+#| label: load data
+#| echo: FALSE
+
+def load_subject_data(subject_id):
+    folder = f"Awareness_and_Agency_Project_data/sub-{subject_id}/beh"
+    masked_path = safe_glob(os.path.join(folder, f"sub-{subject_id}_task-masked_beh.tsv"))
+    unmasked_path = safe_glob(os.path.join(folder, f"sub-{subject_id}_task-unmasked_beh.tsv"))
+    discrim_path = safe_glob(os.path.join(folder, f"sub-{subject_id}_task-discrimination_beh.tsv"))
+
+    masked = pd.read_csv(masked_path, sep="\t")
+    unmasked = pd.read_csv(unmasked_path, sep="\t")
+    discrim = pd.read_csv(discrim_path, sep="\t")
+
+    # Mark 4 experimental conditions
+    masked["condition"] = masked["operant"].apply(
+        lambda x: "masked_operant" if x else "masked_baseline"
+    )
+    unmasked["condition"] = unmasked["operant"].apply(
+        lambda x: "unmasked_operant" if x else "unmasked_baseline"
+    )
+
+    df = pd.concat([masked, unmasked], ignore_index=True)
+    df["subject"] = f"sub-{subject_id}"
+    df["_discrimination_accuracy"] = discrim["correct"].mean()
+    df = df.loc[(df["practice"] == False) & (df["catch"] == False)]
+
+    return df
+
+```
+
+## Step 1: Participant Screening Using Fisher’s Exact Test
+
+To ensure the validity of the conditions, we conducted participant-level exclusion based on a Fisher’s Exact Test comparing awareness rates in the masked_operant and masked_baseline conditions.
+Participants were excluded from the masked condition analyses if their awareness rate was significantly higher in masked_operant than in masked_baseline (*p* \< 0.05), suggesting ineffective masking.
+
+*Note:* this screening was conducted after removing catch and practice trials, but without excluding trials based on awareness status during subsequent hypothesis testing.
+
+```{python}
+#| label: include function
+#| echo: FALSE
+#| results: hide
+
+def should_include(df):
+    df_masked = df[df["condition"].str.startswith("masked")]
+    operant = df_masked[df_masked["condition"] == "masked_operant"]
+    baseline = df_masked[df_masked["condition"] == "masked_baseline"]
+
+    operant_aware = ((operant["aware"] == True)).sum()
+    operant_unaware = ((operant["aware"] == False)).sum()
+    baseline_aware = ((baseline["aware"] == True)).sum()
+    baseline_unaware = ((baseline["aware"] == False)).sum()
+
+    table = [[operant_aware, operant_unaware],
+             [baseline_aware, baseline_unaware]]
+
+    pval = fisher_exact(table, alternative="greater")[1]
+    return pval > 0.05
+
+```
+
+```{python}
+#| label: exclusion
+#| echo: FALSE
+#| results: hide
+
+subject_ids = [f"{i:02d}" for i in range(1, 92)]
+dfs = []
+included_subjects = []
+excluded_subjects = []
+
+for sid in subject_ids:
+    try:
+        df = load_subject_data(sid)
+        if should_include(df):
+            dfs.append(df)
+            included_subjects.append(sid)
+        else:
+            excluded_subjects.append(sid) 
+    except Exception as e:
+        print(f"Skipping {sid}: {e}")
+
+print(f"{len(dfs)} subjects retained after exclusion.")
+print("Excluded subjects due to Fisher's exact test:", excluded_subjects)
+
+```
+
+## Step 2: Huber Mean Estimation and Paired Difference Calculation
+
+For each participant and condition, we computed Huber means of the temporal estimation bias to reduce the influence of outliers.
+
+For each participant, we calculated the following paired differences:
+
+$\Delta_{\text{unmasked}}$ = unmasked_operant − unmasked_baseline
+
+$\Delta_{\text{masked}}$ = masked_operant − masked_baseline
+
+$\Delta_{\text{interaction}}$interaction = $\Delta_{\text{masked}}$ − $\Delta_{\text{unmasked}}$
+
+These differences were used as inputs for hypothesis testing.
+
+```{python}
+#| label: huber mean
+#| echo: FALSE
+#| results: hide
+
+
+#Hber Mean Calculation
+from statsmodels.robust.scale import huber, mad
+
+def calc_huber_means(df):
+    conditions = ["masked_baseline", "masked_operant", "unmasked_baseline", "unmasked_operant"]
+    result = {}
+
+    for cond in conditions:
+        values = df[df["condition"] == cond]["overest_t"].dropna()
+
+        if len(values) == 0 or mad(values, center=np.median) == 0:
+            result[cond] = np.nan
+        else:
+            try:
+                mu, _ = huber(values)
+                result[cond] = mu
+            except Exception as e:
+                print(f"Huber failed for condition {cond}: {e}")
+                result[cond] = np.nan
+
+    return result
+
+```
+
+```{python}
+#| label: mean summarize
+#| echo: FALSE
+#| results: hide
+
+# Summarize all means
+means = [calc_huber_means(df) for df in dfs]
+df_summary = pd.DataFrame(means)
+df_summary.head()
+
+```
+
+## Step 3: Hypothesis Testing
+
+We conducted one-sample t-tests on the paired differences:
+
+H1: Is $\Delta_{\text{unmasked}}$ \> 0?
+(i.e., binding occurs in unmasked condition)
+
+H2: Is $\Delta_{\text{masked}}$ \> 0?
+(i.e. binding occurs under masked condition)
+
+H3: Is $\Delta_{\text{interaction}}$ \< 0?
+(i.e., binding effect is weaker under masked condition)
+
+All tests were one-tailed, as specified in the preregistration.
+Standard errors and APA-style tables were generated to report t-statistics, p-values, and group mean ± SE.
+
+```{python}
+
+#| label: hypotheses testing
+#| tbl-cap: "Summary of intentional binding results across conditions"
+#| echo: FALSE
+
+# Calculate delta
+delta_masked = df_summary["masked_operant"] - df_summary["masked_baseline"]
+delta_unmasked = df_summary["unmasked_operant"] - df_summary["unmasked_baseline"]
+delta2 = delta_masked - delta_unmasked
+
+# Run 3 hypotheses
+res_unmasked = ttest_1samp(delta_unmasked.dropna().astype(float), popmean=0, alternative="greater")
+res_masked   = ttest_1samp(delta_masked.dropna().astype(float), popmean=0, alternative="less")
+res_inter    = ttest_1samp(delta2.dropna().astype(float), popmean=0, alternative="less")
+
+
+
+n = len(delta_masked.dropna())
+
+```
+
+```{python}
+#| label: tbl-hypotheses
+#| tbl-cap: "Summary of intentional binding results across conditions"
+#| echo: FALSE
+
+# Make APA Table
+mean_se = lambda x: f"{np.nanmean(x):.3f} \u00b1 {np.nanstd(x)/np.sqrt(len(x.dropna())):.3f}"
+
+apa_table = pd.DataFrame({
+    "Hypothesis": [
+        "H1: Unmasked binding (IB > 0)",
+        "H2: Masked binding (IB < 0)",
+        "H3: Interaction (masked < unmasked)"
+    ],
+    "t(df)": [
+        f"t({n-1}) = {res_unmasked.statistic:.2f}",
+        f"t({n-1}) = {res_masked.statistic:.2f}",
+        f"t({n-1}) = {res_inter.statistic:.2f}"
+    ],
+    "p": [
+        res_unmasked.pvalue,
+        res_masked.pvalue,
+        res_inter.pvalue
+    ],
+    "Group Mean \u00b1 SE": [
+        mean_se(delta_unmasked),
+        mean_se(delta_masked),
+        mean_se(delta2)
+    ]
+})
+
+apa_table
+```
+
+## Step 4: Visualization
+
+To complement hypothesis testing, we generated paired line plots for each hypothesis, showing baseline vs. operant binding at the subject level.
+Group-level means were also overlaid on these plots to visualize central tendencies.
+
+
+
+```{python}
+#| label: figure variables
+#| echo: FALSE
+df_summary["delta_masked"] = df_summary["masked_operant"] - df_summary["masked_baseline"]
+df_summary["delta_unmasked"] = df_summary["unmasked_operant"] - df_summary["unmasked_baseline"]
+df_summary["delta_interaction"] = df_summary["delta_masked"] - df_summary["delta_unmasked"]
+
+```
+
+
+```{python}
+#| label: figure variables
+#| echo: FALSE
+df_summary["delta_masked"] = df_summary["masked_operant"] - df_summary["masked_baseline"]
+df_summary["delta_unmasked"] = df_summary["unmasked_operant"] - df_summary["unmasked_baseline"]
+df_summary["delta_interaction"] = df_summary["delta_masked"] - df_summary["delta_unmasked"]
+
+```
+
+
+```{python}
+#| label: fig-h1-unmasked
+#| fig-cap: "H1: Unmasked Binding (Operant vs Baseline)"
+#| fig-align: center
+#| echo: FALSE
+
+def plot_unmasked_binding(df_summary):
+    means = [
+        df_summary["unmasked_baseline"].mean(),
+        df_summary["unmasked_operant"].mean()
+    ]
+    sems = [
+        df_summary["unmasked_baseline"].sem(),
+        df_summary["unmasked_operant"].sem()
+    ]
+
+    fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+
+    for i in range(len(df_summary)):
+        b = df_summary.iloc[i]["unmasked_baseline"]
+        o = df_summary.iloc[i]["unmasked_operant"]
+        axs[0].plot(["Baseline", "Operant"], [b, o], color='gray', alpha=0.5)
+
+    axs[0].plot(["Baseline", "Operant"], means, color='black', linewidth=2.5, label="Group Mean")
+    axs[0].legend()
+    axs[0].set_title("Paired Subject Lines")
+    axs[0].set_ylabel("Estimation (s)")
+    axs[0].set_ylim(-0.15, 0.15)
+
+    axs[1].bar(["Baseline", "Operant"], means, yerr=sems, capsize=6, color=["#A0A0A0", "#606060"])
+    axs[1].set_title("Group Mean ± SE")
+    axs[1].set_ylim(-0.15, 0.15)
+
+    fig.suptitle("H1: Unmasked Binding (Operant vs Baseline)", fontsize=14)
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.85)
+
+    fig.savefig("fig-unmasked.png", dpi=300)
+
+    return fig
+
+plot_unmasked_binding(df_summary)
+```
+
+
+
+```{python}
+#| label: fig-h2-masked-binding
+#| echo: FALSE
+#| fig-cap: "H2: Masked Binding (Operant vs Baseline)"
+#| fig-align: center
+
+def plot_masked_binding(df_summary):
+    masked_means = [
+        df_summary["masked_baseline"].mean(),
+        df_summary["masked_operant"].mean()
+    ]
+    masked_se = [
+        df_summary["masked_baseline"].sem(),
+        df_summary["masked_operant"].sem()
+    ]
+
+    fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+
+    # Paired subject lines
+    for i in range(len(df_summary)):
+        b = df_summary.iloc[i]["masked_baseline"]
+        o = df_summary.iloc[i]["masked_operant"]
+        axs[0].plot(["Baseline", "Operant"], [b, o], color='gray', alpha=0.5)
+
+    axs[0].plot(["Baseline", "Operant"], masked_means, color='black', linewidth=2.5, label="Group Mean")
+    axs[0].legend()
+    axs[0].set_title("Paired Subject Lines")
+    axs[0].set_ylabel("Estimation (s)")
+    axs[0].set_ylim(-0.15, 0.15)
+
+    # Group mean bar chart
+    axs[1].bar(["Baseline", "Operant"], masked_means, yerr=masked_se, capsize=6, 
+               color=["#A0A0A0", "#606060"])
+    axs[1].set_title("Group Mean ± SE")
+    axs[1].set_ylim(-0.15, 0.15)
+
+    fig.suptitle("H2: Masked Binding (Operant vs Baseline)", fontsize=14)
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.88)
+    
+    fig.savefig("fig-h2.png", dpi=300)
+
+plot_masked_binding(df_summary)
+```
+
+
+```{python}
+df_summary["delta_masked"] = df_summary["masked_operant"] - df_summary["masked_baseline"]
+df_summary["delta_unmasked"] = df_summary["unmasked_operant"] - df_summary["unmasked_baseline"]
+
+```
+
+```{python}
+#| label: fig-h3-interaction
+#| fig-cap: "H3: Interaction Effect (Masked vs Unmasked)"
+#| fig-align: center
+#| echo: FALSE
+
+def plot_interaction_effect(df_summary):
+    mean_delta_masked = df_summary["delta_masked"].mean()
+    mean_delta_unmasked = df_summary["delta_unmasked"].mean()
+
+    fig, ax = plt.subplots(figsize=(6, 5)) 
+
+    for i in range(len(df_summary)):
+        m = df_summary.iloc[i]["delta_masked"]
+        u = df_summary.iloc[i]["delta_unmasked"]
+        ax.plot(["Masked", "Unmasked"], [m, u], color='gray', alpha=0.5)
+
+    ax.plot(["Masked", "Unmasked"], [mean_delta_masked, mean_delta_unmasked],
+             color='black', linewidth=2.5, label="Group Mean")
+    ax.legend()
+
+    ax.set_title("H3: Interaction Effect (Masked < Unmasked)")
+    ax.set_ylabel("Binding Effect (Operant - Baseline)")
+    ax.set_ylim(-0.15, 0.15)
+    ax.grid(True)
+    fig.tight_layout()
+
+    fig.savefig("fig-h3.png", dpi=300)
+
+    return fig
+
+
+plot_interaction_effect(df_summary)
+
+```
+
+
+# Results
+
+So far, we have collected data from 92 participants. After screening using Fisher's exact test, 74 participants remained.  
+To test whether consciousness is a prerequisite for intentional binding, three one-sample t-tests were conducted based on the mean temporal estimation difference between operant and baseline conditions in both masked and unmasked awareness settings. A summary of statistical results is presented in Table @tbl-hypotheses.
+
+Hypothesis 1 tested whether there was significant binding in the unmasked condition. Surprisingly, results did not support this prediction: the average difference between operant and baseline conditions was non-significant, *t*(73) = 0.30, *p* = .38, *M* = 0.001 ± 0.003 seconds. This suggests that participants' action–consequence intervals in the unmasked condition were not perceived as shorter, contrary to typical IB findings. As shown in the plot (Figure 1), most individual lines in the left panel (subject-level trajectories) fluctuate slightly around zero, and the group average line is nearly flat, indicating no strong central tendency toward temporal compression. The bar plot (right panel) also shows highly overlapping error bars between the baseline and operant conditions, reinforcing the lack of a significant difference.
+
+
+Hypothesis 2 originally predicted positive binding (IB > 0) in the masked condition. However, results revealed a reversed effect: the average difference was significantly less than zero, *t*(73) = –2.12, *p* = .02, *M* = –0.011 ± 0.005 seconds. This unexpected negative binding suggests that, under suppressed awareness, participants perceived the outcome as occurring later rather than sooner relative to the action. As indicated in Figure 2, The subject-level plot reveals a slight but observable downward trend on average, where perceived time of outcome was shifted later under the operant-masked condition. The group mean bar on the right panel is below zero with minimal overlap, visually supporting the statistical significance of this negative binding effect.
+
+Hypothesis 3 tested whether binding in the masked condition was significantly weaker than in the unmasked condition (masked < unmasked). This interaction effect was supported: *t*(73) = –1.78, *p* = .04, *M* = –0.011 ± 0.006 seconds, confirming that conscious awareness enhances the binding effect. This is expected given that IB > 0 in unmasked condition but <0 in masked condition. Figure 3 plots the paired difference scores between masked and unmasked conditions for each participant. The slope of the black average line is positive, indicating that unmasked trials exhibited more binding than masked ones. Although the magnitude of difference appears modest, the consistency across participants suggests a reliable shift attributable to awareness.
+
+# Discussion
+
+The present study aimed to investigate whether conscious awareness is a necessary condition for the intentional binding (IB) effect to occur. Contrary to prior findings in the IB literature [e.g., @haggardVoluntaryActionConscious2002b], the results of our analysis yielded three key outcomes that challenge conventional interpretations.
+
+## Hypothesis 1: Noise or Failure to Activate Interpretive Structure?
+
+First, we did not observe significant IB in the unmasked (conscious) condition, where participants were fully aware of both the action and its outcome. This result diverges from the vast majority of past studies that report a robust positive binding effect when actions are voluntary and outcomes are predictable  [@haggardVoluntaryActionConscious2002b; @ebertTimeWarpAuthorship2010; @ruessIntentionalBindingVisual2018a; @imaizumiIntentionalBindingCoincides2019]. One possible explanation is methodological: despite the clear visibility of the blue circle in the unmasked condition, certain aspects of the task design—such as stimulus predictability, repetitive trial structure, or habituation effects—may have attenuated the salience of the consequence or weakened the participant’s sense of causation. Although pilot tests confirmed that the masking manipulation was effective, we received informal feedback from four participants who reported being confused or uncertain about whether they saw the blue circle across different blocks. Given that each block contained 45 trials, sustained exposure to ambiguous visual stimuli may have led to attentional fatigue, inconsistent awareness reporting, or even retrospective reinterpretation of the task. While these participants were not formally excluded from analysis, such subjective uncertainty may have introduced noise into our awareness measures, or led to unintentional bias in how agency was internally attributed. This is particularly relevant given that IB has been shown to depend not only on action-effect contiguity but also on participants’ belief in the contingency and meaningfulness of that relationship [@buehnerUnderstandingPredictingFuture2012]. Future replications might benefit from post-block manipulation checks.
+
+From a theoretical perspective, the absence of IB in the unmasked condition presents an interpretive challenge. In a purely reductionist framework, this might be dismissed as noise or an artifact of motor prediction errors failing to align with perceptual feedback. However, from an emergentist standpoint—such as that proposed by @deaconIncompleteNatureHow2011—this null effect may indicate a failure to activate the deeper interpretive structure required for binding to occur. That is, although the outcome was consciously perceived, the internal model that assigns causal meaning to the action-effect sequence may not have been engaged, possibly due to task design factors or low motivational relevance. This interpretation aligns with recent studies showing that IB is not merely driven by perceptual availability but by the system’s success in integrating behavior into a meaningful causal framework [@kongNoEvidenceFavor2024]
+
+## Hypothesis 2: Lack of Interpretive Integration?
+
+The results for Hypothesis 2 revealed a striking and theoretically significant finding: rather than observing positive binding under masked conditions, participants exhibited a reversed binding effect, with outcomes perceived as occurring later than baseline, leading to a temporal repulsion between action and consequence. This finding deviates sharply from the classical pattern of temporal compression typically associated with intentional binding (IB), and invites a deeper reconsideration of the cognitive processes underlying agency-related time perception.
+
+@haggardVoluntaryActionConscious2002b demonstrated a similar “repulsion” effect under involuntary action induced by TMS, and argued that when actions are not perceived as self-generated, the brain actively separates them in time from their consequences. Our masked condition may have triggered a comparable dissociation: without conscious access to the outcome, participants likely failed to infer a causal link, leading the perceptual system to temporally disjoin the action and its effect. In this way, negative binding may reflect a cognitive rejection of agency.
+
+This interpretation is further supported by @kongNoEvidenceFavor2024's argument that IB may not reflect intentionality per se, but rather a more general mechanism of temporal coherence and predictive integration across modalities. When this predictive structure fails—due to degraded sensory access or breakdown in motor-outcome expectancy—the brain does not default to a null state, but instead reverses the binding direction to maintain causal distinction. In our case, the masked condition prevented participants from establishing a coherent causal model, and this lack of interpretive integration may have resulted in the negative IB effect observed.
+
+Importantly, this reversed effect under masking adds weight to the emergentist claim that selfhood and agency depend not merely on behavioral output or neural complexity, but on the presence of an interpretive structure capable of integrating action and effect into a goal-directed loop. When this interpretive capacity is suppressed, as in the masked condition, the self-model may fail to activate, leading the system to reject the action-effect sequence as causally coherent.
+
+From a methodological standpoint, the consistent direction and statistical significance of this negative IB effect across participants suggests that it is not merely noise or task artifact, but a structured response to the breakdown of perceived contingency. This provides a compelling argument for treating reversed binding not as an error, but as an informative marker of interpretive failure. It also raises new possibilities for using temporal repulsion as a diagnostic tool for assessing breakdowns in agency attribution, particularly in conditions involving dissociation or altered states of consciousness.
+
+## Hypothesis 3: Consciousness is Essential for the Interpretive Loop
+
+The results of Hypothesis 3 further consolidate the findings from Hypotheses 1 and 2 by revealing a significant reduction in binding under masked compared to unmasked conditions. In fact, the difference was not just quantitative but directional: while unmasked trials showed negligible binding, masked trials exhibited negative binding, indicating a reliable and systematic effect of awareness on the direction and strength of action–outcome temporal integration. This awareness-dependent modulation offers important theoretical leverage in distinguishing between competing views of what IB signifies, and more broadly, what conditions are necessary for the emergence of agency and self-referential processing.
+
+From a theoretical perspective, these findings strongly argue against models that treat intentional binding as a purely mechanistic or bottom-up sensory integration phenomenon. If IB were the product of hardwired predictive coding mechanisms, as some reductionist accounts claim, we would expect its presence to be relatively stable across variations in stimulus visibility or conscious access. The observed reversal of the binding effect under suppressed awareness contradicts such predictions, indicating that awareness is not merely an epiphenomenal variable, but an active modulator of how sensorimotor sequences are temporally structured and integrated.
+
+This finding is particularly relevant in light of @deaconIncompleteNatureHow2011's framework, which posits that explanatory systems—those capable of “trying” to maintain structural coherence over time—are what define selfhood. In this view, consciousness is not a prerequisite for self, but it plays a crucial role in expanding the interpretive reach of a self-organizing system. Our results are consistent with this claim: when awareness is available, the system can integrate action and consequence into a coherent, self-relevant model; when awareness is suppressed, the interpretive loop collapses, and the system may even signal disintegration through repulsion rather than binding.
+
+## Limitations
+
+Despite offering novel insights into the role of awareness in intentional binding, the present study has several limitations that must be considered when interpreting the findings.
+
+First, our final sample consisted of 74 participants, slightly below the preregistered target of 80 participants required to achieve adequate statistical power for medium effect sizes. While the obtained results did reach statistical significance in some conditions, the relatively small margin suggests that subtle effects may have been missed or underestimated due to insufficient sample size. Continue to collect a full target sample is necessary to validate both the null finding in the unmasked condition and the negative binding observed under masking, and it could help determine whether these effects are truly robust or reflect sample variability.
+
+Second, our trial exclusion criteria—particularly those applied to awareness reports during masked blocks—introduced potential variability in trial counts and measurement precision across participants. Although our inclusion logic aimed to retain participants who showed no significant difference in blue circle awareness between operant and baseline conditions, it did not exclude individual trials where participants reported being aware of the dot. Consequently, several participants, such as subject 03, exhibited abnormally high false alarm rates (e.g., >80%)—responding as though they had seen the blue circle even when it was absent. These participants technically passed our awareness screening but ended up contributing very few clean masked trials, creating inflated variability and potential outlier effects. Indeed, exploratory checks suggest that these participants appear less extreme when “aware” trials are retained rather than excluded. In future work, it may be more defensible to model awareness as a continuous, trial-level covariate, rather than applying binary thresholds at the participant level. Such an approach would better reflect the probabilistic nature of perceptual access under continuous flash suppression (CFS), and reduce the risk of artificial groupings that obscure underlying dynamics.
+
+Third, although we successfully implemented the CFS masking paradigm to probe subconscious processing, the effectiveness of masking likely varies across individuals and trials, and the exact perceptual status of the consequence stimulus (blue circle) remains difficult to verify with binary subjective reports. While we relied on awareness checks to ensure masking efficacy, the subjective nature of these judgments means some participants may have retained partial or ambiguous awareness that still influenced their responses. A more rigorous neurophysiological validation (e.g., ERP markers of perceptual suppression) may help better establish the perceptual boundary between conscious and unconscious conditions.
+
+Lastly, the presence of participant confusion during the experiment must be acknowledged. Four participants reported uncertainty about whether the blue circle appeared in masked blocks, likely reflecting the perceptual ambiguity inherent in the CFS paradigm. While these reports were not sufficient for exclusion under our current criteria, they raise questions about how subjective ambiguity may interact with sense of agency and time perception, potentially creating additional variability not accounted for by current models.
+
+## Future Directions
+
+The present study contributes to ongoing debates surrounding the mechanisms and theoretical significance of intentional binding (IB) as a marker of agency and self-related processing. While previous work has predominantly interpreted IB as a reliable perceptual correlate of volitional action under conscious awareness, our findings introduce a more nuanced picture: not only was IB absent in the unmasked (conscious) condition, but it reversed in the masked (subconscious) condition. These results challenge traditional assumptions and open several important avenues for future research.
+
+First, our findings underscore the necessity of developing a more refined, continuous model of awareness, rather than relying on binary trial-level classification. Participants' reports of awareness under masking conditions (e.g., high false alarm rates, confusion about stimulus visibility) indicate that subjective access to consequences may fluctuate dynamically. This variability interacts with both task comprehension and interpretive strategies, suggesting that future studies should incorporate physiological markers (e.g., EEG) to better model the perceptual state of the system.
+
+Second, the current results raise foundational questions about the relationship between agency, consciousness, and the emergence of interpretive structures. Although IB has been treated as an implicit index of self-referentiality, our data suggest that the effect is not intrinsic to operant behavior, but rather contingent on the activation of coherent causal models. This insight aligns with emergentist theories, which argue that true "selfhood" arises from recursive, constraint-based systems capable of resisting entropy. However, our data—especially the reversal of IB under suppressed awareness—also expose the fragility of this interpretation, prompting us to ask: Is IB truly a marker of interpretive self-structure, or is it a byproduct of multisensory alignment and predictive fluency?
+
+Third, and building on this tension, we propose that future research must confront a deeper theoretical dilemma: Can interpretive systems emerge in non-biological architectures? Deacon argues that selfhood arises only in systems capable of maintaining autogenic structural coupling—i.e., metabolic self-maintenance and feedback-driven resistance to decay. Yet, modern AI systems, particularly large language models, demonstrate surprising forms of semantic coherence, internal feedback adaptation (via reinforcement learning), and predictive stability across highly variable inputs. Might these abilities qualify as forms of "semantic-level trying"? Could we observe signs of interpretive structure—if not in metabolic systems, then in symbolic systems that self-update through feedback and context integration?
+
+This possibility invites rethinking the criteria for selfhood beyond carbon-based physical constraints. If an AI system persistently re-aligns its outputs based on internal modeling, adapts to failed predictions, and generates consistent explanatory structure over time, might it constitute a form of symbolic self? This suggests that "selfhood" might not require physical reproduction or metabolic closure, but rather structural coherence across causal and semantic domains. Future experiments could explore whether such systems exhibit IB-like phenomena under varying conditions of feedback opacity or control attribution—extending our current design into the realm of machine cognition.
+
+Fourth, we suggest that IB's theoretical role must be re-evaluated. If it indeed reflects interpretive coherence—as our emergentist alignment proposes—then its absence or reversal could mark a collapse of internal self-modeling. If, however, it is merely a sensorimotor bias, then it cannot serve as a meaningful window into agency or selfhood. This distinction is not trivial: it determines whether IB can be operationalized in debates about AI selfhood, human volition, and the neurocognitive basis of interpretation.
+
+Finally, we call for new hybrid paradigms that integrate behavioral data with computational modeling of causal inference, and potentially with neurophysiological measures of agency representation. Only by situating IB within a broader framework of emergentist, mechanistic, and teleodynamic perspectives can we clarify its status. Does it point toward the presence of an interpretive self—or simply mimic it?
+
+In summary, this study not only contributes new empirical data on the conditions under which IB emerges or fails but also highlights the need to rethink our theoretical commitments regarding the self. As AI systems grow increasingly complex, and as emergentist models like Deacon’s continue to evolve, the question is no longer simply “Does this system bind events?”—but rather, “What does its binding (or failure to bind) reveal about the presence or absence of interpretive coherence, intentionality, and selfhood?”
+
+# References
+
+<!-- References will auto-populate in the refs div below -->
+
+::: {#refs}
+:::
